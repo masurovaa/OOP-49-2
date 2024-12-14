@@ -14,11 +14,15 @@ class Hero:
     def action(self):
         return f"{self.name} делает базовое действие."
 
+#Добавляем новый метод, который показывает статус героя.
+    def status(self):
+        return f'Имя: {self.name}, здоровье: {self.hp}'
+
 hero = Hero('Kirito', 100)
 
 #print(hero.rest())
 #print(hero.action())
-
+#print(hero.status())
 
 """ Наследование """
 # Дочерний класс
@@ -29,7 +33,6 @@ class Warrior(Hero):
         super().__init__(name, hp) #наследовали все атрибуты родительского класса
         self.st = st
 
-
 # можно добавить свои методы дочернего класса
     def attack(self):
         if self.st >= 10:
@@ -38,12 +41,28 @@ class Warrior(Hero):
         else:
             return f'{self.name} стамина меньше 10.'
 
-hero_warrior = Warrior('Ben-10', 1000, 100)
+# Добавляем новый метод.
+    def charge(self):
+        if self.st >= 20:
+            self.st -= 20
+            self.hp += 50
+            return f'{self.name} увеличивает зворовье до {self.hp}, стамина: {self.st}'
+        else:
+             return f'{self.name} не хватает стамины'
 
+# Меняем метод используя наследование, который показывает статус героя.
+    def status(self):
+            return super().status() + f' Стамина: {self.st}'
+
+
+hero_warrior = Warrior('Ben-10', 1000, 100)
 
 #print(hero_warrior.rest())
 #print(hero_warrior.action())
 #print(hero_warrior.attack())
+#print(hero_warrior.status())
+#print(hero_warrior.charge())
+
 
 """ Полиморфизм """ # Изменили метод в дочернем классе не изменяя метод в родительском классе.
 class Mage(Hero):
@@ -63,24 +82,37 @@ class Mage(Hero):
         else:
             return f'{self.name} мана меньше 10'
 
+
 # Перед изменением метода уноследовали родительский метод и обратились внутреннему методу. Полиморфизм с наследованием*.
     def action(self):
         old_action = super().action()
         attack = self.attack()
         return f'{old_action} {attack}'
 
+# Меняем метод используя наследование, который показывает статус героя.
+    def status(self):
+        return super().status() + f' Мана: {self.mp}'
+
+# Создали новый метод телепортации, маг телепортируется используя маны. Не сможет телепортироваться в случае нетхватки маны.
+    def teleport(self):
+        if self.mp >= 30:
+            self.mp -= 30
+            return f'{self.name} телепортировался!'
+        else:
+            return f'Не хватает маны. {self.name} не смог телепортироваться!'
 
 hero_mage = Mage('Magnus', 100, 1000)
 
 #print(hero_mage.rest())
 #print(hero_mage.action())
 #print(hero_mage.attack())
-
+#print(hero_mage.status())
+#print(hero_mage.teleport())
 
 """ Добавляем новый класс-наследник. """
 class Archer(Hero):
 
-# наследуем атрибуты родительского класса и добавляем новые атрибуты лучника
+# наследуем атрибуты родительского класса и добавляем новые атрибуты лучника: стрелы и точность.
     def __init__(self, name, hp, arrows, precision):
         super().__init__(name, hp)
         self.arrows = arrows
@@ -91,6 +123,7 @@ class Archer(Hero):
             self.arrows -= 1
             return f'{self.name} удачно атаковал!'
         elif self.precision == 0:
+            self.arrows -= 1
             return f'{self.name} неудачно атаковал!'
         else:
             return f'{self.name} не смог атаковать!!!'
@@ -103,20 +136,18 @@ class Archer(Hero):
         hero_actions = super().action()
         return f'{hero_actions} {self.rest()}'
 
+    def status(self):
+            return super().status() + f' Стрелы: {self.arrows}'
+
 hero_archer = Archer('Артур', 100, 20, 10)
 
-print(hero_archer.rest())
-print(hero_archer.attack())
+#print(hero_archer.rest())
+#print(hero_archer.attack())
 #print(hero_archer.action())
-#print(hero_archer.actions())
+#print(hero_archer.status())
 
 
-
-
-
-
-
-
-
-
-
+#print(isinstance(hero, Hero))
+#print(isinstance(hero_warrior, Hero))
+#print(isinstance(hero_mage, Hero))
+#print(isinstance(hero_archer, Hero))
