@@ -48,3 +48,17 @@ def binary_search(lst, target):
 
 lst = [1, 2, 3, 4, 5, 6, 7, 8]
 print(binary_search(lst, 5))  # O(log n)
+
+
+""" Магические методы """
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y =y
+
+    def __add__(self, others):
+        return Vector(self.x + others.x, self.y + others.y)
+
+
+v1 = Vector(1, 2)
+
